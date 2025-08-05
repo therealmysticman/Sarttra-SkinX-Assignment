@@ -1,0 +1,19 @@
+{
+  "name": "skinx-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend for SkinX blog application",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node --experimental-json-modules server/server.js",
+    "dev": "nodemon --experimental-json-modules server/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
