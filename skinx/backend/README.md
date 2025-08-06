@@ -23,11 +23,9 @@ backend/
 ├── database/             # Database files
 │   ├── database.js       # Database connection setup
 │   ├── model.js          # Data models and operations
-│   ├── posts.db          # SQLite database file
 │   └── posts.json        # Seed data
 ├── server/               # Server files
 │   ├── server.js         # Express server setup
-│   └── start.js          # Server entry point
 └── package.json          # Backend dependencies
 ```
 
