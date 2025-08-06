@@ -1,0 +1,57 @@
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.circle-1 {
+  width: 800px;
+  height: 800px;
+  background: linear-gradient(to right, #ff9a9e, #fad0c4); /* Pink gradient */
+  top: -300px;
+  left: -200px;
+  animation: float1 15s ease-in-out infinite;
+}
+
+.circle-2 {
+  width: 700px;
+  height: 700px;
+  background: linear-gradient(to right, #43e97b, #38f9d7); /* Green gradient */
+  bottom: -250px;
+  right: -150px;
+  animation: float2 18s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(100px, 100px) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+@keyframes float2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-100px, -100px) rotate(-180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-360deg);
+  }
+}

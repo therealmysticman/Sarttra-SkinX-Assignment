@@ -31,7 +31,7 @@ function App() {
     setCurrentPost(null);
   };
 
-  // Render the appropriate page based on state
+    // Render the appropriate page based on state
   const renderPage = () => {
     if (!isLoggedIn) {
       return <LoginPage onLogin={handleLogin} />;
@@ -39,29 +39,32 @@ function App() {
 
     if (currentPost) {
       return (
-        <PostDetailPage 
-          post={currentPost} 
-          onBack={handleBackToPosts} 
+        <PostDetailPage
+          post={currentPost}
+          onBack={handleBackToPosts}
           onFilterByTag={() => {
             setCurrentPost(null);
-          }} 
-          isLoggedIn={isLoggedIn} 
+          }}
+          isLoggedIn={isLoggedIn}
           onLogout={handleLogout}
         />
       );
     }
 
     return (
-      <PostListPage 
-        onViewPost={handleViewPost} 
-        isLoggedIn={isLoggedIn} 
+      <PostListPage
+        onViewPost={handleViewPost}
+        isLoggedIn={isLoggedIn}
         onLogout={handleLogout}
       />
     );
   };
 
+  // Apply different container class for login page
+  const containerClass = !isLoggedIn ? "app-container login-container-full" : "app-container";
+
   return (
-    <div className="app-container">
+    <div className={containerClass}>
       {renderPage()}
     </div>
   )

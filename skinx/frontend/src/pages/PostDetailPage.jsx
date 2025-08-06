@@ -1,20 +1,20 @@
+import Header from '../components/Header';
+import '../components/styles/PostDetail.css';
+import './styles/PostDetailPage.css';
+import '../components/styles/CommonBackground.css';
+
 function PostDetailPage({ post, onBack, onFilterByTag, isLoggedIn, onLogout }) {
   return (
     <div className="post-detail-page">
-      <header>
-        <h1>SkinX Blog</h1>
-        {isLoggedIn && (
-          <div className="user-info">
-            <span>Welcome, User!</span>
-            <button onClick={onLogout}>Logout</button>
-          </div>
-        )}
-      </header>
+      <div className="animated-background">
+        <div className="circle circle-1"></div>
+        <div className="circle circle-2"></div>
+      </div>
+      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} />
 
       <div className="content">
         <div className="main-content">
           <div className="post-detail">
-            <button onClick={onBack} className="back-button">Back to Posts</button>
             <h2>{post.title}</h2>
             <div className="post-meta">
               <span>Posted: {new Date(post.postedAt).toLocaleDateString()}</span>
@@ -36,6 +36,7 @@ function PostDetailPage({ post, onBack, onFilterByTag, isLoggedIn, onLogout }) {
               dangerouslySetInnerHTML={{ __html: post.content }} 
             />
           </div>
+          <button onClick={onBack} className="back-button">Back to Posts</button>
         </div>
       </div>
     </div>

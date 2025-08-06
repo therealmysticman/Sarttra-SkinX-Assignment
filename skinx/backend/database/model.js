@@ -1,101 +1,102 @@
-const fs = require('fs');
-const path = require('path');
-
-// Path to posts.json file
-const postsFilePath = path.join(__dirname, 'posts.json');
+const db = require('./database');
 
 // Post model class
 class PostModel {
   constructor() {
-    this.posts = this.loadPosts();
-  }
-
-  // Load posts from JSON file
-  loadPosts() {
-    try {
-      const data = fs.readFileSync(postsFilePath);
-      return JSON.parse(data);
-    } catch (error) {
-      console.error('Error reading posts file:', error);
-      return [];
-    }
-  }
-
-  // Save posts to JSON file
-  savePosts() {
-    try {
-      fs.writeFileSync(postsFilePath, JSON.stringify(this.posts, null, 2));
-      return true;
-    } catch (error) {
-      console.error('Error writing posts file:', error);
-      return false;
-    }
+    // No need to load posts on initialization as SQLite handles this
   }
 
   // Get all posts
   getAllPosts() {
-    return this.posts;
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT p.id, p.title, p.content, p.postedAt, p.postedBy, GROUP_CONCAT(pt.tag) as tags
+        FROM posts p
+        LEFT JOIN post_tags pt ON p.id = pt.post_id
+        GROUP BY p.id
+        ORDER BY p.postedAt DESC
+      `;
+      
+      db.all(query, [], (err, rows) => {
+        if (err) {
+          console.error('Error fetching posts:', err.message);
+          reject(err);
+          return;
+        }
+        
+        // Process rows to format tags as arrays
+        const posts = rows.map(row => ({
+          ...row,
+          tags: row.tags ? row.tags.split(',') : []
+        }));
+        
+        resolve(posts);
+      });
+    });
   }
 
-  // Get post by ID
+  // Get a single post by ID
   getPostById(id) {
-    return this.posts.find(post => post.id === id);
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT p.id, p.title, p.content, p.postedAt, p.postedBy, GROUP_CONCAT(pt.tag) as tags
+        FROM posts p
+        LEFT JOIN post_tags pt ON p.id = pt.post_id
+        WHERE p.id = ?
+        GROUP BY p.id
+      `;
+      
+      db.get(query, [id], (err, row) => {
+        if (err) {
+          console.error('Error fetching post by ID:', err.message);
+          reject(err);
+          return;
+        }
+        
+        if (!row) {
+          resolve(null);
+          return;
+        }
+        
+        // Process row to format tags as array
+        const post = {
+          ...row,
+          tags: row.tags ? row.tags.split(',') : []
+        };
+        
+        resolve(post);
+      });
+    });
   }
 
   // Get posts by tag
   getPostsByTag(tag) {
-    return this.posts.filter(post => post.tags && post.tags.includes(tag));
-  }
-
-  // Create a new post
-  createPost(postData) {
-    const newPost = {
-      id: Date.now().toString(),
-      title: postData.title,
-      content: postData.content,
-      postedAt: new Date().toISOString(),
-      postedBy: postData.postedBy || 'Anonymous',
-      tags: postData.tags || []
-    };
-    
-    this.posts.push(newPost);
-    this.savePosts();
-    
-    return newPost;
-  }
-
-  // Update an existing post
-  updatePost(id, postData) {
-    const postIndex = this.posts.findIndex(post => post.id === id);
-    
-    if (postIndex === -1) {
-      return null;
-    }
-    
-    const updatedPost = {
-      ...this.posts[postIndex],
-      title: postData.title || this.posts[postIndex].title,
-      content: postData.content || this.posts[postIndex].content,
-      tags: postData.tags || this.posts[postIndex].tags
-    };
-    
-    this.posts[postIndex] = updatedPost;
-    this.savePosts();
-    
-    return updatedPost;
-  }
-
-  // Delete a post
-  deletePost(id) {
-    const initialLength = this.posts.length;
-    this.posts = this.posts.filter(post => post.id !== id);
-    
-    if (this.posts.length === initialLength) {
-      return false;
-    }
-    
-    this.savePosts();
-    return true;
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT p.id, p.title, p.content, p.postedAt, p.postedBy, GROUP_CONCAT(pt2.tag) as tags
+        FROM posts p
+        JOIN post_tags pt ON p.id = pt.post_id AND pt.tag = ?
+        LEFT JOIN post_tags pt2 ON p.id = pt2.post_id
+        GROUP BY p.id
+        ORDER BY p.postedAt DESC
+      `;
+      
+      db.all(query, [tag], (err, rows) => {
+        if (err) {
+          console.error('Error fetching posts by tag:', err.message);
+          reject(err);
+          return;
+        }
+        
+        // Process rows to format tags as arrays
+        const posts = rows.map(row => ({
+          ...row,
+          tags: row.tags ? row.tags.split(',') : []
+        }));
+        
+        resolve(posts);
+      });
+    });
   }
 }
 

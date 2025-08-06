@@ -1,17 +1,18 @@
 {
   "name": "skinx-backend",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "description": "Backend for SkinX blog application",
   "main": "server/server.js",
   "scripts": {
-    "start": "node --experimental-json-modules server/server.js",
-    "dev": "nodemon --experimental-json-modules server/server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

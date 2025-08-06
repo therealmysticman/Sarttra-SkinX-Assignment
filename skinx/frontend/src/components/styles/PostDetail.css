@@ -1,0 +1,30 @@
+.post-detail {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+.post-detail h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.post-content {
+  margin-top: 20px;
+  line-height: 1.8;
+  text-align: left;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.back-button {
+  margin-top: 20px;
+  align-self: center;
+  padding: 10px 20px;
+  font-size: 16px;
+}
